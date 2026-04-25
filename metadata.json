@@ -1,0 +1,12 @@
+{
+  "name": "Remix: MZ: Health Patient Navigator",
+  "description": "An empathetic AI assistant for Filipino families, explaining PhilHealth benefits and generating zero-bill roadmaps from medical documents.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "AI-powered medical document OCR",
+    "Benefit matching for PhilHealth 2026",
+    "Offline-first utility design"
+  ]
+}
