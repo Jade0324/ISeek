@@ -6,8 +6,8 @@ let genAI: GoogleGenAI | null = null;
 const getGenAI = () => {
   if (!genAI) {
     const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not defined. Please check your environment variables.");
+    if (!apiKey || apiKey === "") {
+      throw new Error("GEMINI_API_KEY is missing. In Vercel, ensure you added it as VITE_GEMINI_API_KEY in Environment Variables.");
     }
     genAI = new GoogleGenAI({ apiKey });
   }
@@ -16,7 +16,7 @@ const getGenAI = () => {
 
 export const extractMedicalData = async (imageBase64: string): Promise<MedicalExtraction> => {
   const ai = getGenAI();
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-1.5-flash";
 
   const response = await ai.models.generateContent({
     model,
