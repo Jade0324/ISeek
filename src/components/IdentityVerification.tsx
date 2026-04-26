@@ -487,8 +487,8 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
                         { label: 'Last Name', key: 'lastName', holder: 'e.g. DELA CRUZ' },
                         { label: 'Birthdate', key: 'birthdate', holder: 'MM/DD/YYYY' },
                         { label: 'Gender', key: 'gender', holder: 'MALE/FEMALE' }
-                      ].map((field, i) => (
-                        <div key={`field-${field.key}`} className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                      ].map((field) => (
+                        <div key={`id-field-${field.key}`} className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
                            <label className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">{field.label}</label>
                            <input 
                              type="text" 

@@ -181,7 +181,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                     </div>
                   ) : (
                     recentActivities.map((activity, idx) => (
-                      <div key={idx} className="bg-white p-5 rounded-[2rem] shadow-xl">
+                      <div key={`activity-${activity.id || idx}`} className="bg-white p-5 rounded-[2rem] shadow-xl">
                          <div className="flex justify-between items-start mb-3">
                             <span className="text-[8px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded">
                                {activity.type === 'extraction' ? 'AI Analysis' : 'Status Update'}

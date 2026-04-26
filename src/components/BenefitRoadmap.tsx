@@ -261,7 +261,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {enrichedPrograms.map(({ rec, full }, idx) => (
               <motion.div 
-                key={`program-card-${idx}`}
+                key={`benefit-program-${full?.id || rec.agency_name}-${idx}`}
                 whileHover={{ y: -2 }}
                 onClick={() => full && setSelectedProgramDetails(full)}
                 className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:border-blue-500/30 transition-all cursor-pointer group"
@@ -311,7 +311,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
         <h2 className="text-[11px] uppercase tracking-widest text-slate-400 font-bold mb-6">Anti-Red Tape (ART) Guide</h2>
         <div className="space-y-6 flex-grow">
           {anti_red_tape_guide.map((step, idx) => (
-            <div key={`art-step-${idx}`} className="flex gap-4 group">
+            <div key={`guide-step-${idx}`} className="flex gap-4 group">
               <div className="w-6 h-6 rounded-full border border-slate-300 bg-white flex items-center justify-center text-[10px] font-bold text-slate-400 shrink-0">
                 {idx + 1}
               </div>
@@ -436,7 +436,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
               <div className="p-6 space-y-3">
                 {recommended_programs.map((program, idx) => (
                   <div 
-                    key={`modal-program-${idx}`}
+                    key={`send-modal-prog-${program.agency_name}-${idx}`}
                     onClick={() => {
                       if (selectedPrograms.includes(program.agency_name)) {
                         setSelectedPrograms(prev => prev.filter(p => p !== program.agency_name));
