@@ -1,9 +1,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { MedicalExtraction } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let genAI: GoogleGenAI | null = null;
+
+const getGenAI = () => {
+  if (!genAI) {
+    const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is not defined. Please check your environment variables.");
+    }
+    genAI = new GoogleGenAI({ apiKey });
+  }
+  return genAI;
+};
 
 export const extractMedicalData = async (imageBase64: string): Promise<MedicalExtraction> => {
+  const ai = getGenAI();
   const model = "gemini-3-flash-preview";
 
   const response = await ai.models.generateContent({
