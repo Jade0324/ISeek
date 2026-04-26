@@ -25,10 +25,6 @@ export const ConsentGateway: React.FC<ConsentGatewayProps> = ({ onAgree, onDecli
               <p className="text-[10px] uppercase font-bold tracking-widest text-blue-100 mt-1">UHC Compliance Protocol</p>
             </div>
           </div>
-          <div className="text-right hidden sm:block">
-            <div className="text-[10px] font-mono text-blue-200 uppercase tracking-widest">Doc-Ref: RA-10173</div>
-            <div className="text-[9px] text-blue-300 font-bold mt-1">V.2026.4</div>
-          </div>
         </div>
 
         <div className="p-8 sm:p-12">
@@ -37,7 +33,7 @@ export const ConsentGateway: React.FC<ConsentGatewayProps> = ({ onAgree, onDecli
             
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 mb-8 text-slate-600 text-sm leading-relaxed">
               <p className="mb-4">
-                In compliance with the <span className="font-bold text-slate-900">Republic Act No. 10173 (Data Privacy Act of 2012)</span>, "Juan's Health Wallet" is committed to protecting your personal and health information.
+                In compliance with the <span className="font-bold text-slate-900">Republic Act No. 10173 (Data Privacy Act of 2012)</span>, "ISeek" is committed to protecting your personal and health information.
               </p>
               <p>
                 By proceeding, you authorize this application to:
@@ -55,11 +51,11 @@ export const ConsentGateway: React.FC<ConsentGatewayProps> = ({ onAgree, onDecli
                   desc: 'Your documents are AES-256 encrypted and never shared with commercial third parties.'
                 },
                 {
-                  title: 'PhilSys Identity Link',
+                  title: 'National Identity Link',
                   desc: 'We securely verify your identity with the National ID system to prevent fraud and bypass manual forms.'
                 }
               ].map((item, i) => (
-                <div key={i} className="flex gap-4 group">
+                <div key={`consent-item-${i}`} className="flex gap-4 group">
                   <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-emerald-500 group-hover:border-emerald-500">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 group-hover:text-white" />
                   </div>
@@ -86,11 +82,6 @@ export const ConsentGateway: React.FC<ConsentGatewayProps> = ({ onAgree, onDecli
             >
               Exit
             </button>
-          </div>
-          
-          <div className="mt-8 pt-8 border-t border-slate-100 flex justify-center items-center gap-2 text-slate-400">
-            <Lock className="w-3.5 h-3.5" />
-            <span className="text-[9px] font-bold uppercase tracking-widest">End-to-End Encryption RA 10173 Guaranteed</span>
           </div>
         </div>
       </motion.div>

@@ -89,6 +89,15 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
     }, 2000);
   };
 
+  // Math logic for strict accuracy
+  const totalBill = document_analysis.total_bill;
+  const philhealth = financial_summary.philhealth_coverage;
+  const yakap = financial_summary.yakap_coverage;
+  const other = financial_summary.ngo_dswd_coverage;
+  const totalDeductions = philhealth + yakap + other;
+  const actualNetPayable = Math.max(0, totalBill - totalDeductions);
+  const actualFundingPercentage = Math.round((totalDeductions / totalBill) * 100);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -121,7 +130,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
           <div className="mt-4 flex flex-wrap gap-2">
             {patient.isVerified && (
               <span className="status-pill bg-blue-600 text-white flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3" /> Identity Verified (RA 10173)
+                <ShieldCheck className="w-3 h-3" /> Identity Verified
               </span>
             )}
             <span className="status-pill bg-emerald-100 text-emerald-700">PhilHealth Active</span>
@@ -183,13 +192,13 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
                   <div>
                     <div className="text-[10px] text-slate-400 uppercase tracking-widest mb-1.5 opacity-80">Total Hospital Bill</div>
                     <div className="text-2xl sm:text-4xl font-black italic tracking-tighter leading-none">
-                      ₱{document_analysis.total_bill.toLocaleString()}
+                      ₱{totalBill.toLocaleString()}
                     </div>
                   </div>
                   <div className="sm:text-right">
-                    <div className="text-[10px] text-emerald-400 uppercase tracking-widest mb-1.5 opacity-80">Estimated Local Coverage</div>
+                    <div className="text-[10px] text-emerald-400 uppercase tracking-widest mb-1.5 opacity-80">Estimated Net Payable</div>
                     <div className="text-xl sm:text-3xl font-black italic text-emerald-400 leading-none tracking-tighter">
-                      {patient.isVerified ? `₱${financial_summary.net_payable.toLocaleString()}.00` : 'Verification Req.'}
+                      {patient.isVerified ? `₱${actualNetPayable.toLocaleString()}.00` : 'Verification Req.'}
                     </div>
                   </div>
                </div>
@@ -198,14 +207,14 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
                   <div className="flex flex-col gap-1">
                     <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400">
                       <span>UHC Coverage Overview</span>
-                      <span>{patient.isVerified ? `${Math.round(((document_analysis.total_bill - financial_summary.net_payable) / document_analysis.total_bill) * 100)}% Funded` : 'Estimates Hidden'}</span>
+                      <span>{patient.isVerified ? `${actualFundingPercentage}% Funded` : 'Estimates Hidden'}</span>
                     </div>
                     <div className="h-3 bg-slate-800 rounded-full flex overflow-hidden">
                       {patient.isVerified ? (
                         <>
-                          <div className="h-full bg-blue-500" style={{ width: `${(financial_summary.philhealth_coverage / document_analysis.total_bill) * 100}%` }} />
-                          <div className="h-full bg-emerald-500" style={{ width: `${(financial_summary.yakap_coverage / document_analysis.total_bill) * 100}%` }} />
-                          <div className="h-full bg-purple-500" style={{ width: `${(financial_summary.ngo_dswd_coverage / document_analysis.total_bill) * 100}%` }} />
+                          <div className="h-full bg-blue-500" style={{ width: `${(philhealth / totalBill) * 100}%` }} />
+                          <div className="h-full bg-emerald-500" style={{ width: `${(yakap / totalBill) * 100}%` }} />
+                          <div className="h-full bg-purple-500" style={{ width: `${(other / totalBill) * 100}%` }} />
                         </>
                       ) : (
                         <div className="h-full bg-slate-700 w-full animate-pulse" />
@@ -216,15 +225,15 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4 font-black uppercase tracking-widest">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <span className="text-slate-500 text-[9px]">PhilHealth Coverage</span>
-                      <span className="text-blue-400 text-[10px] italic">{patient.isVerified ? `-₱${financial_summary.philhealth_coverage.toLocaleString()}` : '••••••'}</span>
+                      <span className="text-blue-400 text-[10px] italic">{patient.isVerified ? `-₱${philhealth.toLocaleString()}` : '••••••'}</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <span className="text-emerald-500/70 text-[9px]">YAKAP Benefit</span>
-                      <span className="text-emerald-400 text-[10px] italic">{patient.isVerified ? `-₱${financial_summary.yakap_coverage.toLocaleString()}` : '••••••'}</span>
+                      <span className="text-emerald-400 text-[10px] italic">{patient.isVerified ? `-₱${yakap.toLocaleString()}` : '••••••'}</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                        <span className="text-slate-500 text-[9px]">Other Aid (DSWD/NGO)</span>
-                       <span className="text-purple-400 text-[10px] italic">{patient.isVerified ? `-₱${financial_summary.ngo_dswd_coverage.toLocaleString()}` : '••••••'}</span>
+                       <span className="text-purple-400 text-[10px] italic">{patient.isVerified ? `-₱${other.toLocaleString()}` : '••••••'}</span>
                     </div>
                   </div>
                </div>
@@ -252,7 +261,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {enrichedPrograms.map(({ rec, full }, idx) => (
               <motion.div 
-                key={idx}
+                key={`program-card-${idx}`}
                 whileHover={{ y: -2 }}
                 onClick={() => full && setSelectedProgramDetails(full)}
                 className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:border-blue-500/30 transition-all cursor-pointer group"
@@ -302,7 +311,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
         <h2 className="text-[11px] uppercase tracking-widest text-slate-400 font-bold mb-6">Anti-Red Tape (ART) Guide</h2>
         <div className="space-y-6 flex-grow">
           {anti_red_tape_guide.map((step, idx) => (
-            <div key={idx} className="flex gap-4 group">
+            <div key={`art-step-${idx}`} className="flex gap-4 group">
               <div className="w-6 h-6 rounded-full border border-slate-300 bg-white flex items-center justify-center text-[10px] font-bold text-slate-400 shrink-0">
                 {idx + 1}
               </div>
@@ -427,7 +436,7 @@ export const BenefitRoadmap: React.FC<BenefitRoadmapProps> = ({ extraction, pati
               <div className="p-6 space-y-3">
                 {recommended_programs.map((program, idx) => (
                   <div 
-                    key={idx}
+                    key={`modal-program-${idx}`}
                     onClick={() => {
                       if (selectedPrograms.includes(program.agency_name)) {
                         setSelectedPrograms(prev => prev.filter(p => p !== program.agency_name));

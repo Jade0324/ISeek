@@ -246,7 +246,7 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
                 <div className="flex justify-center gap-3">
                    {pin.map((digit, i) => (
                      <input 
-                       key={i}
+                       key={`pin-digit-${i}`}
                        type="text" 
                        maxLength={1}
                        className="w-14 h-16 bg-slate-50 border-2 border-slate-200 rounded-2xl text-center text-xl font-bold focus:border-blue-500 outline-none transition-colors"
@@ -364,7 +364,7 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
                       >
                          <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
                          <ShieldCheck className="w-8 h-8 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[44px]" />
-                         <h4 className="text-[10px] font-black uppercase tracking-[0.2em] italic">Decrypting PhilSys QR</h4>
+                         <h4 className="text-[10px] font-black uppercase tracking-[0.2em] italic">Decrypting Secure QR</h4>
                          <p className="text-[9px] text-slate-400 mt-2 font-mono">NODEVERIFY_AES_256_ACTIVE...</p>
                          <div className="w-full h-1 bg-slate-800 rounded-full mt-6 overflow-hidden">
                             <motion.div 
@@ -475,7 +475,7 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
                         { label: 'Birthdate', key: 'birthdate', holder: 'MM/DD/YYYY' },
                         { label: 'Gender', key: 'gender', holder: 'MALE/FEMALE' }
                       ].map((field, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div key={`field-${field.key}`} className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
                            <label className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">{field.label}</label>
                            <input 
                              type="text" 

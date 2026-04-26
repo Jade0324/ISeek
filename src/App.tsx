@@ -14,6 +14,7 @@ import {
   Plus,
   Smartphone,
   Lock,
+  User,
   Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -160,7 +161,7 @@ export default function App() {
             <div className="mt-4 flex gap-1">
                {[0, 1, 2].map(i => (
                  <motion.div 
-                   key={i}
+                   key={`loading-dot-${i}`}
                    animate={{ opacity: [0.3, 1, 0.3] }}
                    transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.2 }}
                    className="w-1 h-1 bg-blue-500 rounded-full"
@@ -190,58 +191,53 @@ export default function App() {
             key="app-shell"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen flex flex-col relative bg-slate-50"
+            className="min-h-screen flex flex-col relative bg-[#0a1121]"
           >
             {/* Conditional Header for Roadmap or Main tabs */}
-            <header className="bg-[#0f172a] text-white p-4 h-20 flex justify-between items-center border-b border-white/10 shrink-0 z-40">
-              <div 
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => {
-                  setStep('app');
-                  setActiveTab('home');
-                  setExtraction(null);
-                }}
-              >
-                <div className={`w-10 h-10 rounded flex items-center justify-center font-bold text-xl shadow-lg transition-all ${isVerified ? 'bg-blue-600 shadow-blue-900/50' : 'bg-slate-700 shadow-black/20'}`}>
-                  {isVerified ? (userProfile?.name?.charAt(0) || 'J') : <Smartphone className="w-5 h-5 text-slate-400" />}
+            {activeTab !== 'home' && (
+              <header className="bg-[#abb5be] text-[#0f172a] p-4 h-20 flex justify-between items-center shrink-0 z-40">
+                <div 
+                  className="flex items-center gap-3 cursor-pointer"
+                  onClick={() => {
+                    setStep('app');
+                    setActiveTab('home');
+                    setExtraction(null);
+                  }}
+                >
+                  <div className="w-10 h-10 bg-white/40 rounded-full flex items-center justify-center border border-white/20">
+                    <User className="w-6 h-6 text-[#0f172a]" />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-black leading-none tracking-tight uppercase italic">{activeTab === 'profile' ? 'My Profile' : 'AI Scanner'}</h1>
+                    <p className="text-[9px] text-[#0f172a]/60 mt-1 uppercase tracking-widest font-mono">UHC Navigator 2026</p>
+                  </div>
                 </div>
-                <div>
-                  <h1 className="text-lg font-bold leading-none tracking-tight uppercase italic">Juan's Wallet</h1>
-                  <p className="text-[9px] text-slate-400 mt-1 uppercase tracking-widest font-mono">UHC Navigator 2026</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4 items-center">
-                <div className="hidden sm:flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider">
-                  <div className={`w-2 h-2 rounded-full ${isOffline ? 'bg-orange-400' : 'bg-emerald-500'}`}></div>
-                  <span>{isOffline ? 'Offline' : 'Online'}</span>
-                </div>
+                
                 <div className="flex gap-1">
-                  <button className="p-2 hover:bg-white/10 rounded transition-colors" onClick={() => setStep('emergency')}><AlertCircle className="w-5 h-5 text-red-400" /></button>
+                  <button className="p-2 hover:bg-black/5 rounded transition-colors" onClick={() => setStep('emergency')}><AlertCircle className="w-5 h-5 text-red-600" /></button>
                   {step !== 'app' && (
                     <button 
                       onClick={() => {
                         setStep('app');
                         setExtraction(null);
                       }}
-                      className="p-2 hover:bg-red-500/20 rounded transition-colors group flex items-center gap-2 border border-white/10 ml-2"
+                      className="p-2 hover:bg-black/5 rounded transition-colors"
                     >
-                      <X className="w-4 h-4 text-red-400" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hidden sm:block">Exit</span>
+                      <X className="w-5 h-5 text-slate-700" />
                     </button>
                   )}
                 </div>
-              </div>
-            </header>
+              </header>
+            )}
 
             <main className="flex-grow flex flex-col overflow-hidden relative">
               <AnimatePresence mode="wait">
                 {step === 'app' && (
                   <motion.div 
                     key="tab-container" 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     className="flex-grow flex flex-col h-full overflow-hidden"
                   >
                      {activeTab === 'home' && (
@@ -250,6 +246,7 @@ export default function App() {
                          recentActivities={recentActivities}
                          isVerified={isVerified}
                          onVerify={() => setShowVerification(true)}
+                         userName={userProfile?.fullName}
                        />
                      )}
                      
@@ -265,7 +262,7 @@ export default function App() {
                             />
                           </div>
                         ) : (
-                          <div className="flex-grow overflow-y-auto p-6 md:p-12 bg-slate-50 pb-32">
+                          <div className="flex-grow overflow-y-auto p-6 md:p-12 bg-slate-50 pb-24">
                              <div className="max-w-3xl mx-auto space-y-8">
                                 <div className="text-center mb-8">
                                    <div className="w-16 h-16 bg-blue-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
@@ -275,17 +272,6 @@ export default function App() {
                                    <p className="text-sm text-slate-500 max-w-sm mx-auto italic">Our AI extracts bill details to identify programs you may qualify for. Complete verification to unlock exact coverage estimates.</p>
                                 </div>
                                 <DocumentScanner onDataExtracted={handleExtraction} />
-                                
-                                <div className="grid grid-cols-2 gap-4 mt-12">
-                                   <div className="p-4 bg-white rounded-2xl border border-slate-100 text-center">
-                                      <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Privacy Lock</p>
-                                      <p className="text-[9px] text-slate-500">Documents are processed with edge encryption.</p>
-                                   </div>
-                                   <div className="p-4 bg-white rounded-2xl border border-slate-100 text-center">
-                                      <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">ART-Ready</p>
-                                      <p className="text-[9px] text-slate-500">Automated PhilHealth Case Rate extraction.</p>
-                                   </div>
-                                </div>
                              </div>
                           </div>
                         )
@@ -317,50 +303,39 @@ export default function App() {
                         )}
                      </AnimatePresence>
                      
-                     {/* Floating Bottom Nav */}
-                     <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-3 flex justify-around items-center z-50 shadow-2xl shadow-blue-900/20">
-                        <button 
-                          onClick={() => setActiveTab('home')}
-                          className={`flex flex-col items-center gap-1.5 p-3 transition-all rounded-2xl ${activeTab === 'home' ? 'bg-white/10 text-white shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
-                        >
-                          <Heart className={`w-5 h-5 ${activeTab === 'home' ? 'fill-blue-500 text-blue-400' : ''}`} />
-                          <span className="text-[8px] font-black uppercase tracking-[0.2em]">Home</span>
-                        </button>
-
-                        <div className="relative group">
-                          {!isVerified && (
-                            <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10">
-                              Verify to Unlock Scan
-                            </div>
-                          )}
-                          <button 
-                            onClick={() => {
-                              if (isVerified) {
-                                setActiveTab('scan');
-                              } else {
-                                setActiveTab('profile');
-                              }
-                            }}
-                            className={`w-14 h-14 rounded-[1.75rem] flex items-center justify-center shadow-xl transition-all -mt-8 border-4 border-[#0f172a] ${
-                              !isVerified 
-                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50' 
-                                : activeTab === 'scan' ? 'bg-blue-500 text-white scale-110 shadow-blue-500/20' : 'bg-white text-slate-900'
-                            }`}
-                          >
-                            {isVerified ? (
-                              <Plus className={`w-7 h-7 transition-transform ${activeTab === 'scan' ? 'rotate-45' : ''}`} />
-                            ) : (
-                              <Lock className="w-6 h-6" />
-                            )}
-                          </button>
+                     {/* System Navigation - Slim & Aesthetic */}
+                     <nav className="fixed bottom-6 left-6 right-6 h-12 bg-[#abb5be]/80 backdrop-blur-md flex justify-around items-center z-50 rounded-[1.5rem] shadow-xl border border-white/20">
+                        {/* Floating Action Button - Integrated & Slimmer */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-[#0a1121] rounded-full flex items-center justify-center shadow-lg border-4 border-[#0a1121]">
+                           <button 
+                             onClick={() => {
+                               if (isVerified) setActiveTab('scan');
+                               else setShowVerification(true);
+                             }}
+                             className={`w-10 h-10 rounded-full flex items-center justify-center shadow-xl transition-all active:scale-95 ${
+                               activeTab === 'scan' ? 'bg-blue-500 text-white' : 'bg-[#0a1121] text-white border border-white/10'
+                             }`}
+                           >
+                             <Smartphone className="w-5 h-5" />
+                           </button>
                         </div>
 
                         <button 
-                          onClick={() => setActiveTab('profile')}
-                          className={`flex flex-col items-center gap-1.5 p-3 transition-all rounded-2xl ${activeTab === 'profile' ? 'bg-white/10 text-white shadow-inner' : 'text-slate-500 hover:text-slate-300'}`}
+                          onClick={() => setActiveTab('home')}
+                          className={`flex flex-col items-center justify-center w-1/3 transition-all ${activeTab === 'home' ? 'text-[#0a1121]' : 'text-[#0a1121]/40'}`}
                         >
-                          <Users className={`w-5 h-5 ${activeTab === 'profile' ? 'fill-blue-500 text-blue-400' : ''}`} />
-                          <span className="text-[8px] font-black uppercase tracking-[0.2em]">Vault</span>
+                           <Users className="w-4 h-4 mb-0.5" />
+                           <span className="text-[7px] font-black uppercase tracking-widest leading-none">HOME</span>
+                        </button>
+
+                        <div className="w-12" /> {/* Spacer for FAB */}
+
+                        <button 
+                          onClick={() => setActiveTab('profile')}
+                          className={`flex flex-col items-center justify-center w-1/3 transition-all ${activeTab === 'profile' ? 'text-[#0a1121]' : 'text-[#0a1121]/40'}`}
+                        >
+                           <User className="w-4 h-4 mb-0.5" />
+                           <span className="text-[7px] font-black uppercase tracking-widest leading-none">PROFILE</span>
                         </button>
                      </nav>
                   </motion.div>
@@ -396,16 +371,6 @@ export default function App() {
 
               </AnimatePresence>
             </main>
-
-            <footer className="bg-white border-t border-slate-200 px-6 py-4 shrink-0 mt-auto pb-28">
-              <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                <div className="flex gap-4 font-mono">
-                   <span>RA 10173</span>
-                   <span>RA 11223</span>
-                </div>
-                <p>© 2026 Juan's Wallet • Anti-Red-Tape Division</p>
-              </div>
-            </footer>
           </motion.div>
         )}
       </AnimatePresence>

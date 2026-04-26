@@ -1,7 +1,7 @@
-# Juan's Wallet: 2026 UHC Digital Navigator
+# ISeek: 2026 UHC Digital Navigator
 ## Current Prototype Status (Beta v1.2)
 
-This documentation tracks the current functional state of the "Juan's Wallet" prototype, a mobile-first Philippine Universal Health Care (UHC) assistant.
+This documentation tracks the current functional state of the "ISeek" prototype, a mobile-first Philippine Universal Health Care (UHC) assistant.
 
 ---
 

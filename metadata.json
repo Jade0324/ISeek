@@ -1,6 +1,6 @@
 {
-  "name": "Remix: MZ: Health Patient Navigator",
-  "description": "An empathetic AI assistant for Filipino families, explaining PhilHealth benefits and generating zero-bill roadmaps from medical documents.",
+  "name": "ISeek",
+  "description": "2026 UHC Digital Navigator for Philippine Health Services",
   "requestFramePermissions": [
     "camera"
   ],

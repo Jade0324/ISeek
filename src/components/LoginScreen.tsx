@@ -44,9 +44,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         className="max-w-md w-full relative z-10"
       >
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center font-bold text-3xl mx-auto mb-6 shadow-xl shadow-blue-900/40">J</div>
-          <h1 className="text-3xl font-black uppercase tracking-tighter mb-2 italic">Juan's Health Wallet</h1>
-          <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">UHC Navigator • PhilSys Integrated</p>
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-2 italic">ISeek</h1>
+          <p className="text-slate-400 text-sm font-medium uppercase tracking-widest">UHC Navigator</p>
         </div>
 
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl">
@@ -112,10 +111,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
            <div className="flex flex-col items-center gap-2">
              <ShieldCheck className="w-5 h-5" />
              <span className="text-[9px] font-bold uppercase tracking-widest">Secured</span>
-           </div>
-           <div className="flex flex-col items-center gap-2">
-             <Fingerprint className="w-5 h-5" />
-             <span className="text-[9px] font-bold uppercase tracking-widest">PhilSys Ready</span>
            </div>
         </div>
       </motion.div>
