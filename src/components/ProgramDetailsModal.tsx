@@ -83,8 +83,8 @@ export const ProgramDetailsModal: React.FC<ProgramDetailsModalProps> = ({ progra
                        <div className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm">
                           <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Qualifications</h3>
                           <ul className="space-y-3">
-                             {program.eligibility?.map((item, i) => (
-                               <li key={`eligibility-${i}`} className="flex gap-4 items-start">
+                             {program.eligibility?.map((item) => (
+                               <li key={`eligibility-point-${item.substring(0, 15).replace(/\s+/g, '-')}`} className="flex gap-4 items-start">
                                   <div className="w-5 h-5 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
                                   </div>
@@ -97,8 +97,8 @@ export const ProgramDetailsModal: React.FC<ProgramDetailsModalProps> = ({ progra
                        <div className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm">
                           <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Checklist</h3>
                           <div className="grid grid-cols-1 gap-2">
-                             {program.requirements?.map((req, i) => (
-                               <div key={`requirement-${i}`} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                             {program.requirements?.map((req) => (
+                               <div key={`requirement-check-${req.replace(/\s+/g, '-').toLowerCase()}`} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
                                   <div className="flex items-center gap-3">
                                      <FileText className="w-4 h-4 text-slate-400" />
                                      <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{req}</span>

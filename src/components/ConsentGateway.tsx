@@ -54,8 +54,8 @@ export const ConsentGateway: React.FC<ConsentGatewayProps> = ({ onAgree, onDecli
                   title: 'National Identity Link',
                   desc: 'We securely verify your identity with the National ID system to prevent fraud and bypass manual forms.'
                 }
-              ].map((item, i) => (
-                <div key={`consent-item-${i}`} className="flex gap-4 group">
+              ].map((item) => (
+                <div key={`consent-point-${item.title.replace(/\s+/g, '-').toLowerCase()}`} className="flex gap-4 group">
                   <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:bg-emerald-500 group-hover:border-emerald-500">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 group-hover:text-white" />
                   </div>

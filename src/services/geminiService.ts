@@ -24,7 +24,7 @@ const getGenAI = () => {
 
 export const extractMedicalData = async (imageBase64: string): Promise<MedicalExtraction> => {
   const ai = getGenAI();
-  const model = "gemini-1.5-flash";
+  const model = "gemini-3-flash-preview";
 
   const response = await ai.models.generateContent({
     model,
