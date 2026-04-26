@@ -22,15 +22,21 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({ onDataExtracte
     try {
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const fullDataUrl = reader.result as string;
-        const base64 = fullDataUrl.split(',')[1];
-        const data = await extractMedicalData(base64);
-        onDataExtracted({ ...data, scanned_image: fullDataUrl });
-        setLoading(false);
+        try {
+          const fullDataUrl = reader.result as string;
+          const base64 = fullDataUrl.split(',')[1];
+          const data = await extractMedicalData(base64);
+          onDataExtracted({ ...data, scanned_image: fullDataUrl });
+          setLoading(false);
+        } catch (err: any) {
+          console.error("Scanning Error:", err);
+          setError(err.message || 'Failed to process document. Please ensure the image is clear and your API key is valid.');
+          setLoading(false);
+        }
       };
       reader.readAsDataURL(file);
-    } catch (err) {
-      setError('Failed to process document. Please try again.');
+    } catch (err: any) {
+      setError('System error reading file.');
       setLoading(false);
     }
   };

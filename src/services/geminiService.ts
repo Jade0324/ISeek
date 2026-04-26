@@ -5,7 +5,15 @@ let genAI: GoogleGenAI | null = null;
 
 const getGenAI = () => {
   if (!genAI) {
-    const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+    // API Key Priority: 
+    // 1. process.env (Vite define)
+    // 2. import.meta.env (VITE_ prefix)
+    // 3. User-provided key (Fallback for Vercel if env configuration fails)
+    const apiKey = 
+      process.env.GEMINI_API_KEY || 
+      import.meta.env.VITE_GEMINI_API_KEY || 
+      "AIzaSyApi21KyoZAEIFdQvGHA-CS8F4W9_vACD4";
+
     if (!apiKey || apiKey === "") {
       throw new Error("GEMINI_API_KEY is missing. In Vercel, ensure you added it as VITE_GEMINI_API_KEY in Environment Variables.");
     }
