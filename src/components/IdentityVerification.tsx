@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { verifyUserSession } from '../services/firebase';
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeScannerState } from 'html5-qrcode';
 import { PHILIPPINE_PERSONAS } from '../constants/personas';
 
 interface VerificationPortalProps {
@@ -75,7 +75,13 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
   useEffect(() => {
     return () => {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(console.error);
+        try {
+          if (scannerRef.current.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
+            scannerRef.current.stop().catch(() => {});
+          }
+        } catch (e) {
+          // Ignore
+        }
       }
     };
   }, []);
@@ -109,7 +115,14 @@ export const IdentityVerification: React.FC<VerificationPortalProps> = ({ onVeri
 
   const stopScanner = async () => {
     if (scannerRef.current) {
-      await scannerRef.current.stop();
+      try {
+        const state = scannerRef.current.getState();
+        if (state !== Html5QrcodeScannerState.NOT_STARTED) {
+          await scannerRef.current.stop();
+        }
+      } catch (err) {
+        console.warn("Scanner stop warning:", err);
+      }
       scannerRef.current = null;
     }
     setIsScanning(false);
